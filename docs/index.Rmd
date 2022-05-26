@@ -1,0 +1,12 @@
+---
+title: "LMPD's Investment in Mental Health and Other Social Services"
+output: 
+  html_document:
+    self_contained: no
+    toc: true
+    toc_float: true
+    code_folding: hide
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
+---
+
+Text example
