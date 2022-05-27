@@ -276,6 +276,15 @@ div.tocify {
 </div>
 <div id="other-local-government-initiatives" class="section level3">
 <h3>Other Local Government Initiatives</h3>
+<p>More to come here…</p>
+<p>Talk about CIT training and Mobile Response Unit – Homelessness Response</p>
+</div>
+<div id="lmpds-investment-in-social-services" class="section level3">
+<h3>LMPD’s Investment in Social Services</h3>
+<p>The total number of LMPD officers has risen and fallen over the last 15 years. It hit its peak in fiscal year 2018, at 1,027 officers. As of fiscal year 2020, there are now 956 officers.</p>
+<p>Meanwhile, for most of the last 15 years, LMPD has employed one or even no employees focused on social services, according to a GLP analysis of Louisville Metro Government documents. GLP included the positions of victim advocate, social service program coordinator and similar iterations of these positions in its analysis.</p>
+<p>In the most recent fiscal year in which data is available (2020), LMPD employed four individuals with a focus on providing social services to the community.</p>
+<p><img src="images/officers_social_services.png" /></p>
 <pre class="r"><code>officer_data &lt;- read.csv(&#39;intermediate_data/lmpd_victim_advocates.csv&#39;)
 
 library(ggplot2)
@@ -287,6 +296,26 @@ total_officers &lt;- ggplot(officer_data, aes(x=fiscal_year, y=police_officer)) 
 total_social_services &lt;- ggplot(officer_data, aes(x=fiscal_year, y=social_services)) +
   geom_line() + 
   theme_minimal()</code></pre>
+</div>
+<div id="calls-to-lmpd-that-could-be-deflected" class="section level3">
+<h3>Calls to LMPD that Could be Deflected</h3>
+<p><a href="https://louisvilleky.gov/mayor-greg-fischer/document/louisville-metro-alternative-responder-model-research-and-planning" class="uri">https://louisvilleky.gov/mayor-greg-fischer/document/louisville-metro-alternative-responder-model-research-and-planning</a></p>
+<pre class="r"><code>#install.packages(&#39;geojsonio&#39;)
+library(geojsonio)
+library(ggplot2) 
+library(broom)
+
+districts &lt;- geojson_read(&quot;intermediate_data/Louisville_KY_Metro_Police_Districts.geojson&quot;,  what = &quot;sp&quot;)
+
+districts_fortified &lt;- tidy(districts)
+
+district_map &lt;- ggplot() +
+  geom_polygon(data = districts_fortified, aes(x = long, y = lat, group = group), fill=&quot;white&quot;, color=&quot;black&quot;) +
+  theme_void() +
+  coord_map()
+
+district_map</code></pre>
+<p><img src="index_files/figure-html/district%20map-1.png" width="672" /></p>
 </div>
 
 

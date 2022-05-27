@@ -31,6 +31,21 @@ All of these pilot programs enjoyed some success but **none are around to today*
 
 ### Other Local Government Initiatives
 
+More to come here...
+
+Talk about CIT training and Mobile Response Unit -- Homelessness Response
+
+### LMPD's Investment in Social Services
+
+The total number of LMPD officers has risen and fallen over the last 15 years. It hit its peak in fiscal year 2018, at 1,027 officers. As of fiscal year 2020, there are now 956 officers. 
+
+Meanwhile, for most of the last 15 years, LMPD has employed one or even no employees focused on social services, according to a GLP analysis of Louisville Metro Government documents. GLP included the positions of victim advocate, social service program coordinator and similar iterations of these positions in its analysis. 
+
+In the most recent fiscal year in which data is available (2020), LMPD employed four individuals with a focus on providing social services to the community. 
+
+![](images/officers_social_services.png)
+
+
 ```{r total officers}
 
 officer_data <- read.csv('intermediate_data/lmpd_victim_advocates.csv')
@@ -45,4 +60,31 @@ total_social_services <- ggplot(officer_data, aes(x=fiscal_year, y=social_servic
   geom_line() + 
   theme_minimal()
 ```
+
+### Calls to LMPD that Could be Deflected
+
+https://louisvilleky.gov/mayor-greg-fischer/document/louisville-metro-alternative-responder-model-research-and-planning
+
+```{r district map, warning=FALSE, message=FALSE}
+
+#install.packages('geojsonio')
+library(geojsonio)
+library(ggplot2) 
+library(broom)
+
+districts <- geojson_read("intermediate_data/Louisville_KY_Metro_Police_Districts.geojson",  what = "sp")
+
+districts_fortified <- tidy(districts)
+
+district_map <- ggplot() +
+  geom_polygon(data = districts_fortified, aes(x = long, y = lat, group = group), fill="white", color="black") +
+  theme_void() +
+  coord_map()
+
+district_map
+```
+
+
+
+
 
