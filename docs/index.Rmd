@@ -18,4 +18,4 @@ Over the last decade, Louisville has experimented with a few of these alternativ
 
 All of these pilot programs enjoyed some success but *none are around to today* largely because of a lack of funding. 
 
-![](images/Alternative Responder.svg)
+![](images/alternative_responder.png)
