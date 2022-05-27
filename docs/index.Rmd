@@ -9,13 +9,40 @@ output:
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
 ---
 
-Many communities have relied on police officers as somewhat of a catch-all response to all kinds of crises. However, some say that many of these crises do not merit a police response; instead, they would be better solved by mental health experts and social services providers. 
+Many communities have relied on police officers as somewhat of a catch-all response to all kinds of crises. However, some say that many of these crises do not merit a police response; instead, they would be better solved by mental health experts and other providers of social services. 
 
-Communities big and small — Phoenix, Portland, Tucson and Wichita, to name a few — have experimented in recent years with so-called alternative responder models in which police officers are not the default way to respond to crises. 
+Communities big and small — Phoenix, Portland, Tucson and Wichita, to name a few — have experimented in recent years with so-called alternative responder models in which police officers are not the default first response to a crisis. 
 
-### Louisville's History of Alternative Responder Models
-Over the last decade, Louisville has experimented with a few of these alternative responder models, aiming to reroute crisis calls from the police to mental health experts, social service providers and other experts who might be able to respond more appropriately. 
+### Louisville's Recent History of Alternative Responder Models
+Over the last decade, Louisville has experimented with a few of these *alternative responder* models, aiming to reroute crisis calls from the police to mental health experts, social service providers and other experts who might be able to respond more appropriately. 
 
-All of these pilot programs enjoyed some success but *none are around to today* largely because of a lack of funding. 
+All of these pilot programs enjoyed some success but **none are around to today** largely because of a lack of funding. 
 
 ![](images/alternative_responder.png)
+
+*Note: This historical account is adapted from the Louisville Metro Alternative Responder Model Research and Planning Final Report from the Commonwealth Institute of Kentucky (September 2021)*
+
+> Outcomes
+
+* Nurse Triage Program: The program was largely successful, and it expanded from one nurse to two. However, the program ran out of grant funding. 
+* Domestic Violence Victim Advocates: The victim advocates involved in the program reported that the program had positive effects on those experiencing trauma but also noted that the need in the community exceeded the capacity of their small team.
+* Law Enforcement Assisted Diversion: The program served fewer people than expected over its relatively short lifespan. Other challenges included staff turnover in partner agencies and limited buy-in from partner agencies.
+* The Living Room: The program was largely successful in that it provided wide access to behavioral health services while avoiding jail time, court fees, inpatient stays and housing and employment disruptions. It also resulted in cost savings to the Metro Government. However, budget cuts ultimately shuttered the program.
+
+### Other Local Government Initiatives
+
+```{r total officers}
+
+officer_data <- read.csv('intermediate_data/lmpd_victim_advocates.csv')
+
+library(ggplot2)
+
+total_officers <- ggplot(officer_data, aes(x=fiscal_year, y=police_officer)) +
+  geom_line() + 
+  theme_minimal()
+
+total_social_services <- ggplot(officer_data, aes(x=fiscal_year, y=social_services)) +
+  geom_line() + 
+  theme_minimal()
+```
+
