@@ -9,4 +9,13 @@ output:
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
 ---
 
-Text example
+Many communities have relied on police officers as somewhat of a catch-all response to all kinds of crises. However, some say that many of these crises do not merit a police response; instead, they would be better solved by mental health experts and social services providers. 
+
+Communities big and small — Phoenix, Portland, Tucson and Wichita, to name a few — have experimented in recent years with so-called alternative responder models in which police officers are not the default way to respond to crises. 
+
+### Louisville's History of Alternative Responder Models
+Over the last decade, Louisville has experimented with a few of these alternative responder models, aiming to reroute crisis calls from the police to mental health experts, social service providers and other experts who might be able to respond more appropriately. 
+
+All of these pilot programs enjoyed some success but *none are around to today* largely because of a lack of funding. 
+
+![](images/Alternative Responder.svg)
