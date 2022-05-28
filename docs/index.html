@@ -274,10 +274,11 @@ div.tocify {
 <li>The Living Room: The program was largely successful in that it provided wide access to behavioral health services while avoiding jail time, court fees, inpatient stays and housing and employment disruptions. It also resulted in cost savings to the Metro Government. However, budget cuts ultimately shuttered the program.</li>
 </ul>
 </div>
-<div id="other-local-government-initiatives" class="section level3">
-<h3>Other Local Government Initiatives</h3>
-<p>More to come here…</p>
-<p>Talk about CIT training and Mobile Response Unit – Homelessness Response</p>
+<div id="existing-lmpd-mental-health-initiatives" class="section level3">
+<h3>Existing LMPD Mental Health Initiatives</h3>
+<p>The Crisis Intervention Team (CIT) model is a popular training program that teaches officers how to interact with and respond to those experiencing a mental health crisis.</p>
+<p>LMPD officers receive 40 hours of CIT training, and there are CIT-trained individuals available on every shift in every police division. However, according to researchers at the University of Louisville’s Commonwealth Institute of Kentucky, “LMPD does not routinely evaluate its CIT program and impact, outcomes, and efficiency.”</p>
+<p>Additionally, in February 2021, LMPD created its Mobile Response Unit with two homelessness officers. The unit has performed wellness checks and partnered with various community organizations to document homelessness and provide various resources.</p>
 </div>
 <div id="lmpds-investment-in-social-services" class="section level3">
 <h3>LMPD’s Investment in Social Services</h3>
@@ -299,7 +300,13 @@ total_social_services &lt;- ggplot(officer_data, aes(x=fiscal_year, y=social_ser
 </div>
 <div id="calls-to-lmpd-that-could-be-deflected" class="section level3">
 <h3>Calls to LMPD that Could be Deflected</h3>
-<p><a href="https://louisvilleky.gov/mayor-greg-fischer/document/louisville-metro-alternative-responder-model-research-and-planning" class="uri">https://louisvilleky.gov/mayor-greg-fischer/document/louisville-metro-alternative-responder-model-research-and-planning</a></p>
+<p>In 2021, LMPD responded to 192,445 calls. Of those calls, 7,996 calls were mental health related (about 4%). An analysis by researchers at the Commonwealth Institute of Kentucky found that trained professionals other than police officers could have responded to 5,661 of those 7,996 mental health calls (71%). This is known as deflection.</p>
+<p>Communities across the country have called for more police deflection, in favor of crisis response by mental health professionals and other social service providers.</p>
+<p>In March, Louisville officially launched a <a href="https://louisvilleky.gov/news/mayor-fischer-announces-official-start-pilot-project-deflect-some-911-calls-non-police">$5 million pilot program</a> to deflect some 911 calls to other behavioral health professionals.</p>
+<blockquote>
+<p>Louisville’s new police deflection pilot program 11 trained professionals. Seven of those professionalls will be in the field responding to calls. Two will be answering 911 calls at a hub at MetroSafe, and two are case managers who will provide follow up services after 911 calls.</p>
+</blockquote>
+<p>The pilot program began in LMPD’s 4th Division with one shift, 7 days per week. The 4th Division received the most mental health calls in 2021, followed by the 1st Division.</p>
 <pre class="r"><code>#install.packages(&#39;geojsonio&#39;)
 library(geojsonio)
 library(ggplot2) 
@@ -312,10 +319,8 @@ districts_fortified &lt;- tidy(districts)
 district_map &lt;- ggplot() +
   geom_polygon(data = districts_fortified, aes(x = long, y = lat, group = group), fill=&quot;white&quot;, color=&quot;black&quot;) +
   theme_void() +
-  coord_map()
-
-district_map</code></pre>
-<p><img src="index_files/figure-html/district%20map-1.png" width="672" /></p>
+  coord_map()</code></pre>
+<p><img src="images/police_districts_mental_health.png" /></p>
 </div>
 
 

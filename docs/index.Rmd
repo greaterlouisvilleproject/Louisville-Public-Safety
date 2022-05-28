@@ -29,11 +29,13 @@ All of these pilot programs enjoyed some success but **none are around to today*
 * Law Enforcement Assisted Diversion: The program served fewer people than expected over its relatively short lifespan. Other challenges included staff turnover in partner agencies and limited buy-in from partner agencies.
 * The Living Room: The program was largely successful in that it provided wide access to behavioral health services while avoiding jail time, court fees, inpatient stays and housing and employment disruptions. It also resulted in cost savings to the Metro Government. However, budget cuts ultimately shuttered the program.
 
-### Other Local Government Initiatives
+### Existing LMPD Mental Health Initiatives
 
-More to come here...
+The Crisis Intervention Team (CIT) model is a popular training program that teaches officers how to interact with and respond to those experiencing a mental health crisis. 
 
-Talk about CIT training and Mobile Response Unit -- Homelessness Response
+LMPD officers receive 40 hours of CIT training, and there are CIT-trained individuals available on every shift in every police division. However, according to researchers at the University of Louisville's Commonwealth Institute of Kentucky, "LMPD does not routinely evaluate its CIT program and impact, outcomes, and efficiency."
+
+Additionally, in February 2021, LMPD created its Mobile Response Unit with two homelessness officers. The unit has performed wellness checks and partnered with various community organizations to document homelessness and provide various resources. 
 
 ### LMPD's Investment in Social Services
 
@@ -63,7 +65,15 @@ total_social_services <- ggplot(officer_data, aes(x=fiscal_year, y=social_servic
 
 ### Calls to LMPD that Could be Deflected
 
-https://louisvilleky.gov/mayor-greg-fischer/document/louisville-metro-alternative-responder-model-research-and-planning
+In 2021, LMPD responded to 192,445 calls. Of those calls, 7,996 calls were mental health related (about 4%). An analysis by researchers at the Commonwealth Institute of Kentucky found that trained professionals other than police officers could have responded to 5,661 of those 7,996 mental health calls (71%). This is known as deflection.
+
+Communities across the country have called for more police deflection, in favor of crisis response by mental health professionals and other social service providers. 
+
+In March, Louisville officially launched a [$5 million pilot program](https://louisvilleky.gov/news/mayor-fischer-announces-official-start-pilot-project-deflect-some-911-calls-non-police) to deflect some 911 calls to other behavioral health professionals.
+
+> Louisville's new police deflection pilot program 11 trained professionals. Seven of those professionalls will be in the field responding to calls. Two will be answering 911 calls at a hub at MetroSafe, and two are case managers who will provide follow up services after 911 calls.
+
+The pilot program began in LMPD's 4th Division with one shift, 7 days per week. The 4th Division received the most mental health calls in 2021, followed by the 1st Division.
 
 ```{r district map, warning=FALSE, message=FALSE}
 
@@ -80,10 +90,9 @@ district_map <- ggplot() +
   geom_polygon(data = districts_fortified, aes(x = long, y = lat, group = group), fill="white", color="black") +
   theme_void() +
   coord_map()
-
-district_map
 ```
 
+![](images/police_districts_mental_health.png)
 
 
 
