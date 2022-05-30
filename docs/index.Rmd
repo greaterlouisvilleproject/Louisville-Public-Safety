@@ -22,7 +22,7 @@ All of these pilot programs enjoyed some success but **none are around to today*
 
 *Note: This historical account is adapted from the Louisville Metro Alternative Responder Model Research and Planning Final Report from the Commonwealth Institute of Kentucky (September 2021)*
 
-> Outcomes
+> Outcomes:
 
 * Nurse Triage Program: The program was largely successful, and it expanded from one nurse to two. However, the program ran out of grant funding. 
 * Domestic Violence Victim Advocates: The victim advocates involved in the program reported that the program had positive effects on those experiencing trauma but also noted that the need in the community exceeded the capacity of their small team.
@@ -47,9 +47,6 @@ Meanwhile, for most of the last 15 years, LMPD has employed one or even no emplo
 
 In the most recent fiscal year in which data is available (2020), LMPD employed four individuals with a focus on providing social services to the community. 
 
-![](images/officers_social_services.png)
-
-
 ```{r total officers}
 
 officer_data <- read.csv('intermediate_data/lmpd_victim_advocates.csv')
@@ -64,8 +61,50 @@ total_social_services <- ggplot(officer_data, aes(x=fiscal_year, y=social_servic
   geom_line() + 
   theme_minimal()
 ```
+![](images/officers_social_services.png)
 
-### Calls to LMPD that Could be Deflected
+> A Broader Look:
+
+Zooming out briefly, here's a look at the most recent LMPD budget and specifically how much the department spends on its officers and other personnel vs. other expenses, compared to its peers. 
+
+For this analysis, GLP focused on the peer cities of Charlotte, Nashville and Indianapolis. These are all cities in which the city and county governments are combined (like Louisville). This allows for a more accurate comparison of public safety spending.
+
+**Add explanation of the percentage of budget spent on personnel, etc**
+
+```{r public safety waffle charts, warning=FALSE, message=FALSE}
+
+library(ggplot2)
+library(waffle)
+
+louisville_police_spending <- c(`Personnel ($176.5M)`=176514100, `Contracts ($8.4M)`=8449200, 
+             `Supplies ($2.2M)`=2244600, `Equipment and Capital ($878.6K)`=878600, `Utilities ($30.6K)`=30600)
+louisville_waffle <- waffle(louisville_police_spending/500000, rows=10, size=0.5, 
+       colors=c("#01acbb", "#f48422", "#520b34", "#1b3663", "#45644c"), 
+       xlab="1 square == $500K")
+
+nashville_police_spending <- c(`Personnel ($184.3M)`=184308627, `Contracts ($731K)`=731118, 
+             `Equipment and Capital ($2.6M)`=2617006, `Utilities ($56.4K)`=56414)
+nashville_waffle <- waffle(nashville_police_spending/500000, rows=10, size=0.5, 
+       colors=c("#01acbb", "#f48422", "#520b34", "#1b3663"), 
+       xlab="1 square == $500K")
+
+st_louis_police_spending <- c(`Personnel ($237.7M)`=237696985, `Contracts ($18M)`=17950338, 
+             `Equipment and Capital ($2.8M)`=2765396, `Supplies ($4.6M)`=4623194)
+stlouis_waffle <- waffle(st_louis_police_spending/500000, size=0.5,
+       colors=c("#01acbb", "#f48422", "#520b34", "#1b3663"), 
+       xlab="1 square == $500K")
+
+indianapolis_police_spending <- c(`Personnel ($200M)`=199974660, `Contracts ($20M)`=20013384, 
+             `Equipment and Capital ($9.4M)`=9432587, `Supplies ($2M)`=2002650)
+indianapolis_waffle <- waffle(indianapolis_police_spending/500000,size=0.5, 
+       colors=c("#01acbb", "#f48422", "#520b34", "#1b3663"), 
+       xlab="1 square == $500K")
+
+```
+
+![](images/police_peer_spending.png)
+
+### Mental Health Calls to LMPD that Could be Deflected
 
 In 2021, LMPD responded to 192,445 calls. Of those calls, 7,996 calls were mental health related (about 4%). An analysis by researchers at the Commonwealth Institute of Kentucky found that trained professionals other than police officers could have responded to 5,661 of those 7,996 mental health calls (71%). This is known as deflection.
 

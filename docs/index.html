@@ -265,7 +265,7 @@ div.tocify {
 <p><img src="images/alternative_responder.png" /></p>
 <p><em>Note: This historical account is adapted from the Louisville Metro Alternative Responder Model Research and Planning Final Report from the Commonwealth Institute of Kentucky (September 2021)</em></p>
 <blockquote>
-<p>Outcomes</p>
+<p>Outcomes:</p>
 </blockquote>
 <ul>
 <li>Nurse Triage Program: The program was largely successful, and it expanded from one nurse to two. However, the program ran out of grant funding.</li>
@@ -286,7 +286,6 @@ div.tocify {
 <p>The total number of LMPD officers has risen and fallen over the last 15 years. It hit its peak in fiscal year 2018, at 1,027 officers. As of fiscal year 2020, there are now 956 officers.</p>
 <p>Meanwhile, for most of the last 15 years, LMPD has employed one or even no employees focused on social services, according to a GLP analysis of Louisville Metro Government documents. GLP included the positions of victim advocate, social service program coordinator and similar iterations of these positions in its analysis.</p>
 <p>In the most recent fiscal year in which data is available (2020), LMPD employed four individuals with a focus on providing social services to the community.</p>
-<p><img src="images/officers_social_services.png" /></p>
 <pre class="r"><code>officer_data &lt;- read.csv(&#39;intermediate_data/lmpd_victim_advocates.csv&#39;)
 
 library(ggplot2)
@@ -298,9 +297,43 @@ total_officers &lt;- ggplot(officer_data, aes(x=fiscal_year, y=police_officer)) 
 total_social_services &lt;- ggplot(officer_data, aes(x=fiscal_year, y=social_services)) +
   geom_line() + 
   theme_minimal()</code></pre>
+<p><img src="images/officers_social_services.png" /></p>
+<blockquote>
+<p>A Broader Look:</p>
+</blockquote>
+<p>Zooming out briefly, here’s a look at the most recent LMPD budget and specifically how much the department spends on its officers and other personnel vs. other expenses, compared to its peers.</p>
+<p>For this analysis, GLP focused on the peer cities of Charlotte, Nashville and Indianapolis. These are all cities in which the city and county governments are combined (like Louisville). This allows for a more accurate comparison of public safety spending.</p>
+<p><strong>Add explanation of the percentage of budget spent on personnel, etc</strong></p>
+<pre class="r"><code>library(ggplot2)
+library(waffle)
+
+louisville_police_spending &lt;- c(`Personnel ($176.5M)`=176514100, `Contracts ($8.4M)`=8449200, 
+             `Supplies ($2.2M)`=2244600, `Equipment and Capital ($878.6K)`=878600, `Utilities ($30.6K)`=30600)
+louisville_waffle &lt;- waffle(louisville_police_spending/500000, rows=10, size=0.5, 
+       colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;, &quot;#45644c&quot;), 
+       xlab=&quot;1 square == $500K&quot;)
+
+nashville_police_spending &lt;- c(`Personnel ($184.3M)`=184308627, `Contracts ($731K)`=731118, 
+             `Equipment and Capital ($2.6M)`=2617006, `Utilities ($56.4K)`=56414)
+nashville_waffle &lt;- waffle(nashville_police_spending/500000, rows=10, size=0.5, 
+       colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;), 
+       xlab=&quot;1 square == $500K&quot;)
+
+st_louis_police_spending &lt;- c(`Personnel ($237.7M)`=237696985, `Contracts ($18M)`=17950338, 
+             `Equipment and Capital ($2.8M)`=2765396, `Supplies ($4.6M)`=4623194)
+stlouis_waffle &lt;- waffle(st_louis_police_spending/500000, size=0.5,
+       colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;), 
+       xlab=&quot;1 square == $500K&quot;)
+
+indianapolis_police_spending &lt;- c(`Personnel ($200M)`=199974660, `Contracts ($20M)`=20013384, 
+             `Equipment and Capital ($9.4M)`=9432587, `Supplies ($2M)`=2002650)
+indianapolis_waffle &lt;- waffle(indianapolis_police_spending/500000,size=0.5, 
+       colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;), 
+       xlab=&quot;1 square == $500K&quot;)</code></pre>
+<p><img src="images/police_peer_spending.png" /></p>
 </div>
-<div id="calls-to-lmpd-that-could-be-deflected" class="section level3">
-<h3>Calls to LMPD that Could be Deflected</h3>
+<div id="mental-health-calls-to-lmpd-that-could-be-deflected" class="section level3">
+<h3>Mental Health Calls to LMPD that Could be Deflected</h3>
 <p>In 2021, LMPD responded to 192,445 calls. Of those calls, 7,996 calls were mental health related (about 4%). An analysis by researchers at the Commonwealth Institute of Kentucky found that trained professionals other than police officers could have responded to 5,661 of those 7,996 mental health calls (71%). This is known as deflection.</p>
 <p>Communities across the country have called for more police deflection, in favor of crisis response by mental health professionals and other social service providers.</p>
 <p>In March, Louisville officially launched a <a href="https://louisvilleky.gov/news/mayor-fischer-announces-official-start-pilot-project-deflect-some-911-calls-non-police">$5 million pilot program</a> to deflect some 911 calls to other behavioral health professionals.</p>
