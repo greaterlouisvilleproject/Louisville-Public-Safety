@@ -331,7 +331,35 @@ indianapolis_police_spending &lt;- c(`Personnel ($200M)`=199974660, `Contracts (
 indianapolis_waffle &lt;- waffle(indianapolis_police_spending/500000,size=0.5, 
        colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;), 
        xlab=&quot;1 square == $500K&quot;)</code></pre>
-<p><img src="images/police_peer_spending.png" /></p>
+<p><img src="images/police_peer_spending.png" /> LMPD’s police budget has continually increased over time — and recently, in particular, with tens of millions of dollars more flowing in from the American Rescue Plan. Police salaries have also increased over time.</p>
+<p>In December 2021, Metro Council members approved a 9% raise for officers and sergeants for the 2021-22 year and a 6% raise for the following year.</p>
+<p>Overall, LMPD officers make nearly $57,000 after graduating from the police academy. That’s $24,000 above the $32,705 pre-tax living wage in Louisville for one adult with no children, according to MIT.</p>
+<p>However, a few of Louisville’s peer cities pay their officers even more above the area living wage: Cincinnati, Columbus, Indianapolis and Tulsa.</p>
+<pre class="r"><code>#devtools::install_github(&quot;hrbrmstr/ggalt&quot;)
+library(ggplot2)
+library(ggalt)
+theme_set(theme_classic())
+
+officer_salaries &lt;- read.csv(&#39;intermediate_data/police_officer_salary_peers.csv&#39;)
+officer_salaries$city &lt;- factor(officer_salaries$city, levels=as.character(officer_salaries$city))  
+
+officer_salaries$city &lt;- factor(officer_salaries$city)
+
+dumbbell &lt;- ggplot(officer_salaries, aes(x=living_wage, xend=after_graduation, y=city, group=city)) + 
+        geom_dumbbell(color=&quot;#01acbb&quot;, 
+                      size=1.5, 
+                      point.colour.l=&quot;#1b3663&quot;) + 
+        scale_x_continuous() + 
+        labs(x=NULL, 
+             y=NULL) +
+        theme(plot.title = element_text(hjust=0.5, face=&quot;bold&quot;),
+              panel.grid.minor=element_blank(),
+              panel.grid.major.y=element_blank(),
+              panel.grid.major.x=element_line(),
+              axis.ticks=element_blank(),
+              legend.position=&quot;top&quot;,
+              panel.border=element_blank())</code></pre>
+<p><img src="images/officer_salaries.png" /></p>
 </div>
 <div id="mental-health-calls-to-lmpd-that-could-be-deflected" class="section level3">
 <h3>Mental Health Calls to LMPD that Could be Deflected</h3>

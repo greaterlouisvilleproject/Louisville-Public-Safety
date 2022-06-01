@@ -47,7 +47,7 @@ Meanwhile, for most of the last 15 years, LMPD has employed one or even no emplo
 
 In the most recent fiscal year in which data is available (2020), LMPD employed four individuals with a focus on providing social services to the community. 
 
-```{r total officers}
+```{r total officers, warning=FALSE, message=FALSE}
 
 officer_data <- read.csv('intermediate_data/lmpd_victim_advocates.csv')
 
@@ -105,6 +105,45 @@ indianapolis_waffle <- waffle(indianapolis_police_spending/500000,size=0.5,
 ```
 
 ![](images/police_peer_spending.png)
+LMPD's police budget has continually increased over time — and recently, in particular, with tens of millions of dollars more flowing in from the American Rescue Plan. Police salaries have also increased over time. 
+
+In December 2021, Metro Council members approved a 9% raise for officers and sergeants for the 2021-22 year and a 6% raise for the following year. 
+
+Overall, LMPD officers make nearly $57,000 after graduating from the police academy. That's \$24,000 above the \$32,705 pre-tax living wage in Louisville for one adult with no children, according to MIT.
+
+However, a few of Louisville's peer cities pay their officers even more above the area living wage: Cincinnati, Columbus, Indianapolis and Tulsa. 
+
+```{r police officer salaries, warning=FALSE, message=FALSE}
+
+#devtools::install_github("hrbrmstr/ggalt")
+library(ggplot2)
+library(ggalt)
+theme_set(theme_classic())
+
+officer_salaries <- read.csv('intermediate_data/police_officer_salary_peers.csv')
+officer_salaries$city <- factor(officer_salaries$city, levels=as.character(officer_salaries$city))  
+
+officer_salaries$city <- factor(officer_salaries$city)
+
+dumbbell <- ggplot(officer_salaries, aes(x=living_wage, xend=after_graduation, y=city, group=city)) + 
+        geom_dumbbell(color="#01acbb", 
+                      size=1.5, 
+                      point.colour.l="#1b3663") + 
+        scale_x_continuous() + 
+        labs(x=NULL, 
+             y=NULL) +
+        theme(plot.title = element_text(hjust=0.5, face="bold"),
+              panel.grid.minor=element_blank(),
+              panel.grid.major.y=element_blank(),
+              panel.grid.major.x=element_line(),
+              axis.ticks=element_blank(),
+              legend.position="top",
+              panel.border=element_blank())
+
+```
+
+![](images/officer_salaries.png)
+
 
 ### Mental Health Calls to LMPD that Could be Deflected
 
