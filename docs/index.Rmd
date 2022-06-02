@@ -105,13 +105,13 @@ indianapolis_waffle <- waffle(indianapolis_police_spending/500000,size=0.5,
 ```
 
 ![](images/police_peer_spending.png)
-LMPD's police budget has continually increased over time — and recently, in particular, with tens of millions of dollars more flowing in from the American Rescue Plan. Police salaries have also increased over time. 
+LMPD's police budget has continually increased over time — especially recently with tens of millions of dollars flowing in from the American Rescue Plan. 
 
-In December 2021, Metro Council members approved a 9% raise for officers and sergeants for the 2021-22 year and a 6% raise for the following year. 
+Police salaries have also increased over time. In December 2021, Metro Council members approved a 9% raise for officers and sergeants for the 2021-22 year and a 6% raise for the following year. 
 
-Overall, LMPD officers make nearly $57,000 after graduating from the police academy. That's \$24,000 above the \$32,705 pre-tax living wage in Louisville for one adult with no children, according to MIT.
+Currently, LMPD officers make nearly $57,000 after graduating from the police academy. That's \$24,000 above the \$32,705 pre-tax living wage for one adult with no children in Louisville, according to MIT.
 
-However, a few of Louisville's peer cities pay their officers even more above the area living wage: Cincinnati, Columbus, Indianapolis and Tulsa. 
+A few of Louisville's peer cities pay their officers even more above the area living wage: Cincinnati, Columbus, Indianapolis and Tulsa. 
 
 ```{r police officer salaries, warning=FALSE, message=FALSE}
 
