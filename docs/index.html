@@ -385,6 +385,27 @@ district_map &lt;- ggplot() +
   coord_map()</code></pre>
 <p><img src="images/police_districts_mental_health.png" /></p>
 </div>
+<div id="lmpd-professional-standards-unit-investigations" class="section level3">
+<h3>LMPD Professional Standards Unit Investigations</h3>
+<p>Those who advocate for police officers to respond to fewer types of calls in the community sometimes point to police misconduct data.</p>
+<p>Here’s a closer look at Professional Standards Unit investigations over the past couple of years. The PSU is responsible for conducting “internal, administrative investigations of departmental members and administering the department’s drug testing program,” according to LMPD documents.</p>
+<p>In 2020, the most common allegation or charge against LMPD officers involved use of force, followed by concerns with courtesy and officers’ wearable video systems.</p>
+<p><img src="images/most_common_charges.png" /></p>
+<p>Over the last few years, the number of PSU investigations has declined.</p>
+<p>More than 40% of the investigations launched in 2020 are still pending, even two years later, and more than 70% of the investigations launched in 2021 are still pending. Overall, in any given year, a greater proportion of investigations are closed through various means (i.e. the charges are unfounded, the officer is exonerated, etc.) than sustained.</p>
+<p>Generally, over the past few years, most investigations have resulted in a written reprimand or suspension. Relatively few have resulted in termination or demotion.</p>
+<pre class="r"><code>library(ggplot2) 
+
+psu_outcomes &lt;- read.csv(&#39;intermediate_data/PSU_investigations.csv&#39;)
+
+psu_outcomes &lt;- ggplot(psu_outcomes, aes(x=year)) +
+  geom_line(aes(y = pending), color = &quot;#01acbb&quot;) +
+  geom_line(aes(y = sustained), color = &quot;#1b3663&quot;) +
+  geom_line(aes(y = closed), color = &quot;#1b3663&quot;) +
+  geom_line(aes(y = total), color = &quot;#1b3663&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="images/psu_outcomes.png" /></p>
+</div>
 
 
 
