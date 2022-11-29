@@ -273,24 +273,11 @@ making to create a safer Louisville.</p>
 people who have been working on the ground for years to address this
 issue. It is our deepest intention to contribute wisely to this topic,
 and our work reflects the outcome of months of conversations with
-community members.</p>
+community members, civic leaders, and violence intervention experts.</p>
 <p>Based on the legislation in front of Metro Council, Public Safety
 will likely receive nearly $67 million in investment through ARP funds
 over the next four years.</p>
 <p><img src="images/allocations%20November%2029.png" /></p>
-<div id="protective-factors-and-risk-factors" class="section level2">
-<h2>Protective factors and risk factors</h2>
-<p>Protective factors are supports that provide positive influence on
-youth and encourage them to thrive, while risk factors make youth more
-inclined commit violence. Examples of protective factors include
-positive self-esteem and an experienced teacher at school, and examples
-of risk factors include substance abuse in the household and violence in
-their neighborhood.</p>
-<p>See here for further information: <a
-href="https://www.samhsa.gov/sites/default/files/20190718-samhsa-risk-protective-factors.pdf"
-class="uri">https://www.samhsa.gov/sites/default/files/20190718-samhsa-risk-protective-factors.pdf</a></p>
-<p><img src="images/protective-risk.png" /></p>
-</div>
 </div>
 <div id="violence-in-louisville" class="section level1">
 <h1>Violence in Louisville</h1>
@@ -893,742 +880,12 @@ ranking(
 </div>
 </div>
 </div>
-<div id="suicide" class="section level2">
-<h2>Suicide</h2>
-<div id="overall-1" class="section level3 tabset">
-<h3 class="tabset">Overall</h3>
-<div id="ranking-2" class="section level4">
-<h4>Ranking</h4>
-<p>Louisville ranks around the middle of its peers.</p>
-<pre class="r"><code>this_title &lt;- &quot;Suicide&quot;
-this_subtitle = &quot;Adjusted for population&quot;
-this_caption &lt;- &quot;\n\nData from CDC Wonder, 2022&quot;
-this_caption_trend_graphs &lt;- &quot;\n\nData from CDC Wonder, 2022&quot;
-
-temp &lt;- mortality %&gt;%
-  filter(age_5 == &quot;total&quot;) %&gt;%
-  mutate(suicide = suicide * adj)
-
-ranking(
-  temp,
-  suicide,
-  year = 2021,
-  plot_title = &quot;Suicide, 2021&quot;,
-  caption_text = this_caption,
-  subtitle_text = this_subtitle,
-  y_title = &quot;Deaths&quot;,
-  label_function = comma_format(accuracy = 1),
-  ranking_colors = FALSE,
-  order = &quot;ascending&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" width="1440" /></p>
-</div>
-<div id="trend-2" class="section level4">
-<h4>Trend</h4>
-<p>Louisville’s homicide rate in 2021 was the highest in history that we
-have seen as a city.</p>
-<pre class="r"><code>trend(
-  filter(temp, year &lt; 2022),
-  suicide,
-  plot_title = this_title,
-  caption_text = this_caption,
-  label_function = comma_format(accuracy = 1),
-  y_title = &quot;Deaths&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" width="1440" /></p>
-<pre class="r"><code>temp &lt;- mortality %&gt;% 
-  pull_peers(add_info = T)
-
-graph_df &lt;- temp %&gt;%
-  filter(city == &quot;Louisville&quot;, 
-         sex == &quot;total&quot;,
-         race == &quot;total&quot;,
-         age_5 != &quot;total&quot;) %&gt;%
-  select(year, age_5, lou = suicide)
-
-temp %&lt;&gt;%
-  filter(city != &quot;Louisville&quot;, 
-         current == 1,
-         sex == &quot;total&quot;,
-         race == &quot;total&quot;,
-         age_5 != &quot;total&quot;) %&gt;%
-  group_by(year, age_5) %&gt;%
-  summarise(q1 = quantile(suicide, prob = 0.25, na.rm = TRUE),
-            mean = mean(suicide, na.rm = TRUE),
-            q3 = quantile(suicide, prob = 0.75, na.rm = TRUE),
-            .groups = &quot;drop&quot;)
-  
-graph_df %&lt;&gt;%
-  left_join(temp, by = c(&quot;year&quot;, &quot;age_5&quot;)) %&gt;%
-  filter(year == 2021)
-
-ggplot(graph_df) +
-  geom_bar(aes(x = age_5, y = lou), fill = &quot;#00A9B7&quot;, stat = &quot;identity&quot;) +
-  geom_errorbar(aes(x = age_5, ymin = q1, ymax = q3), width = 0.4, size = 1.3, color = &quot;grey50&quot;) +
-  geom_point(aes(x = age_5, y = mean), size = 6) +
-  theme_bw(
-    base_size = 11,
-    base_family = &quot;Museo Sans&quot;)</code></pre>
-</div>
-</div>
-<div id="youth-suicide" class="section level3 tabset">
-<h3 class="tabset">Youth suicide</h3>
-<p>(This doesn’t include poeple younger than 15.)</p>
-<div id="ranking-3" class="section level4">
-<h4>Ranking</h4>
-<pre class="r"><code>this_title &lt;- &quot;Youth Suicide&quot;
-this_subtitle = &quot;Ages 15-24; adjusted for population&quot;
-
-temp &lt;- mortality %&gt;%
-  filter(age_5 %in% c(&quot;15-19&quot;, &quot;20-24&quot;)) %&gt;%
-  group_by(FIPS, year, sex, race) %&gt;%
-  summarize(suicide = sum(suicide * adj), 
-            .groups = &quot;drop&quot;) 
-
-ranking(
-  temp,
-  suicide,
-  year = 2021,
-  plot_title = &quot;Youth Suicide, 2021&quot;,
-  caption_text = this_caption,
-  subtitle_text = this_subtitle,
-  y_title = &quot;Deaths&quot;,
-  label_function = comma_format(accuracy = 1),
-  ranking_colors = FALSE,
-  order = &quot;ascending&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" width="1440" /></p>
-</div>
-<div id="trend-3" class="section level4">
-<h4>Trend</h4>
-<pre class="r"><code>trend(
-  filter(mortality_wide, year &lt; 2022, cod == &quot;suicide&quot;),
-  `15-19`:`20-24`,
-  cat = c(&quot;15-19&quot; = &quot;15-19&quot;, &quot;20-24&quot; = &quot;20-24&quot;),
-  plot_title = this_title,
-  subtitle_text = this_subtitle,
-  caption_text = this_caption_trend_graphs,
-  axis_function = comma_format(accuracy = 1),
-  label_function = comma_format(accuracy = 1),
-  pctiles = F,
-  y_title = &quot;Deaths&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-17-1.png" width="1440" /></p>
-</div>
-<div id="by-race-1" class="section level4">
-<h4>by Race</h4>
-<pre class="r"><code>trend(
-  temp,
-  suicide,
-  cat = &quot;race&quot;,
-  plot_title = this_title,
-  subtitle_text = this_subtitle,
-  caption_text = this_caption_trend_graphs,
-  axis_function = comma_format(accuracy = 1),
-  label_function = comma_format(accuracy = 1),
-  pctiles = F,
-  y_title = &quot;Deaths&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" width="1440" /></p>
-</div>
-<div id="by-gender-1" class="section level4">
-<h4>by Gender</h4>
-<pre class="r"><code>trend(
-  temp,
-  suicide,
-  cat = &quot;sex&quot;,
-  plot_title = this_title,
-  subtitle_text = this_subtitle,
-  caption_text = this_caption_trend_graphs,
-  axis_function = comma_format(accuracy = 1),
-  label_function = comma_format(accuracy = 1),
-  pctiles = F,
-  y_title = &quot;Deaths&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" width="1440" /></p>
-</div>
-</div>
-</div>
-<div id="overdoses" class="section level2">
-<h2>Overdoses</h2>
-<div id="overall-2" class="section level3 tabset">
-<h3 class="tabset">Overall</h3>
-<div id="ranking-4" class="section level4">
-<h4>Ranking</h4>
-<p>Louisville ranks around the middle of its peers.</p>
-<pre class="r"><code>this_title &lt;- &quot;Overdoses&quot;
-this_subtitle = &quot;Adjusted for population&quot;
-this_caption &lt;- &quot;\n\nData from CDC Wonder, 2022&quot;
-this_caption_trend_graphs &lt;- &quot;\n\nData from CDC Wonder, 2022&quot;
-
-temp &lt;- overdose %&gt;%
-  mutate(overdoses = overdoses * adj)
-
-ranking(
-  temp,
-  overdoses,
-  year = 2021,
-  plot_title = &quot;Overdoses, 2021&quot;,
-  caption_text = this_caption,
-  subtitle_text = this_subtitle,
-  y_title = &quot;Deaths&quot;,
-  label_function = comma_format(accuracy = 1),
-  ranking_colors = FALSE,
-  order = &quot;ascending&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" width="1440" /></p>
-</div>
-<div id="trend-4" class="section level4">
-<h4>Trend</h4>
-<p>Louisville’s homicide rate in 2021 was the highest in history that we
-have seen as a city.</p>
-<pre class="r"><code>trend(
-  filter(temp, year &lt; 2022),
-  overdoses,
-  plot_title = this_title,
-  caption_text = this_caption,
-  axis_function = comma_format(accuracy = 1),
-  label_function = comma_format(accuracy = 1),
-  y_title = &quot;Deaths&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" width="1440" /></p>
-</div>
-</div>
-</div>
-</div>
-<div id="disconnected-youth" class="section level1">
-<h1>Disconnected youth</h1>
-<p>Disconnected youth are age 16 to 24 who are not working or in
-school.</p>
-<div id="trend-5" class="section level2">
-<h2>Trend</h2>
-<p><img src="images/disconnected_trend.png" /></p>
-</div>
-<div id="by-race-2" class="section level2">
-<h2>by Race</h2>
-<p><img src="images/disconnected_trend_race.png" /></p>
-</div>
-</div>
-<div id="investing-in-safety" class="section level1">
-<h1>Investing in safety</h1>
-<div id="oshn-staffing" class="section level2">
-<h2>OSHN staffing</h2>
-<p><img src="images/OSHN%20staffing.png" /></p>
-</div>
-<div id="city-budget-analysis" class="section level2">
-<h2>City budget analysis</h2>
-<p><img src="images/city-budget.png" /></p>
-</div>
-<div id="american-rescue-plan-funding" class="section level2">
-<h2>American Rescue Plan Funding</h2>
-<p><img src="images/arp-investment.png" /></p>
-</div>
-<div id="investing-in-youth" class="section level2">
-<h2>Investing in Youth</h2>
-<div id="funding-to-youth-programming" class="section level3">
-<h3>Funding to Youth Programming</h3>
-<p><img src="images/Youth%20Funding.png" /></p>
-</div>
-<div id="data-on-youth-wellbeing" class="section level3">
-<h3>Data on Youth Wellbeing</h3>
-<pre class="r"><code>youth_data_sources &lt;- data.frame(
-  Topic = 
-    c(&quot;Mental Health in JCPS&quot;,
-      &quot;Disconnected Youth&quot;,
-      &quot;Youth Housing Instability&quot;,
-      &quot;JCPS Transition to Adult Life&quot;,
-      &quot;Funding to Youth Programming&quot;,
-      &quot;Youth Violence&quot;),
-  `Data Source` = 
-    c(&quot;Kentucky Incentives for Prevention Survey&quot;,
-      &quot;JCPS / Kentucky Department of Education&quot;,
-      &quot;U.S. Census Bureau&quot;,
-      &quot;U.S. Census Bureau&quot;,
-      &quot;IRS Filings from Nonprofits&quot;,
-      &quot;Centers for Disease Control&quot;),
-  `Current Year of Data` = 
-    c(2018,
-      2019,
-      2019,
-      2019,
-      2020,
-      2021),
-  `Next Data Release` = c(
-    &quot;Unsure&quot;,
-    &quot;September 2022&quot;,
-    &quot;December 2022&quot;,
-    &quot;December 2022&quot;,
-    &quot;December 2022&quot;,
-    &quot;March 2022&quot;),
-  Explanation = c(
-    &quot;The Kentucky Incentives for Prevention Survey is Kentucky’s largest source of data related to youth use of alcohol, tobacco, and other drugs (ATOD), as well as a number of additional factors related to adolescent social and emotional well-being. This survey was last conducted in 2021 following the COVID-19 pandemic; however, participation is voluntary. JCPS declined to conduct the survey in 2021, and as a result, 2018 is the last year for which we have this data.&quot;,    &quot;JCPS provides data on students&#39; plans following graduation--entry into the workforce or military, college attendance, etc. While we have 2020 data, it is not comparable to other years due to diruptions from the COVID-19 pandemic. We await the next data release in September 2022.&quot;,
-    &quot;The U.S. Census Bureau administers an annual household survey (the American Community Survey, or ACS) which provides a variety of data on demographics, housing, and economics. Disruptions due to COVID-19 rendered the 2020 data inaccurate, so we await the 2021 data release coming in December 2022.&quot;,
-    &quot;The U.S. Census Bureau administers an annual household survey (the American Community Survey, or ACS) which provides a variety of data on demographics, housing, and economics. Disruptions due to COVID-19 rendered the 2020 data inaccurate, so we await the 2021 data release coming in December 2022.&quot;,
-    &quot;Tax filings for nonprofit organizations are public information, which allows us to understand the landscape of investment in youth programs in Louisville. The IRS has released all on-time filings for tax year 2020, and we will get newwer data on a rolling basis as tax returns for 2021 are submitted and released.&quot;,
-    &quot;The CDC releases mortality data on a monthly basis. This gives us insight into gun violence and other deaths for youth and young adults in Louisville.&quot;))
-
-gt(youth_data_sources)</code></pre>
-<div id="mzrbmwaqma" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
-}
-
-#mzrbmwaqma .gt_table {
-  display: table;
-  border-collapse: collapse;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#mzrbmwaqma .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#mzrbmwaqma .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#mzrbmwaqma .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#mzrbmwaqma .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#mzrbmwaqma .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#mzrbmwaqma .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#mzrbmwaqma .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#mzrbmwaqma .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#mzrbmwaqma .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#mzrbmwaqma .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#mzrbmwaqma .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#mzrbmwaqma .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#mzrbmwaqma .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#mzrbmwaqma .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#mzrbmwaqma .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#mzrbmwaqma .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#mzrbmwaqma .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#mzrbmwaqma .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#mzrbmwaqma .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#mzrbmwaqma .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#mzrbmwaqma .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#mzrbmwaqma .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#mzrbmwaqma .gt_left {
-  text-align: left;
-}
-
-#mzrbmwaqma .gt_center {
-  text-align: center;
-}
-
-#mzrbmwaqma .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#mzrbmwaqma .gt_font_normal {
-  font-weight: normal;
-}
-
-#mzrbmwaqma .gt_font_bold {
-  font-weight: bold;
-}
-
-#mzrbmwaqma .gt_font_italic {
-  font-style: italic;
-}
-
-#mzrbmwaqma .gt_super {
-  font-size: 65%;
-}
-
-#mzrbmwaqma .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
-  font-size: 75%;
-  vertical-align: 0.4em;
-}
-
-#mzrbmwaqma .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#mzrbmwaqma .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#mzrbmwaqma .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#mzrbmwaqma .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#mzrbmwaqma .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#mzrbmwaqma .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-<table class="gt_table">
-  
-  <thead class="gt_col_headings">
-    <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Topic">Topic</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Data.Source">Data.Source</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Current.Year.of.Data">Current.Year.of.Data</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Next.Data.Release">Next.Data.Release</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Explanation">Explanation</th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><td headers="Topic" class="gt_row gt_left">Mental Health in JCPS</td>
-<td headers="Data.Source" class="gt_row gt_left">Kentucky Incentives for Prevention Survey</td>
-<td headers="Current.Year.of.Data" class="gt_row gt_right">2018</td>
-<td headers="Next.Data.Release" class="gt_row gt_left">Unsure</td>
-<td headers="Explanation" class="gt_row gt_left">The Kentucky Incentives for Prevention Survey is Kentucky’s largest source of data related to youth use of alcohol, tobacco, and other drugs (ATOD), as well as a number of additional factors related to adolescent social and emotional well-being. This survey was last conducted in 2021 following the COVID-19 pandemic; however, participation is voluntary. JCPS declined to conduct the survey in 2021, and as a result, 2018 is the last year for which we have this data.</td></tr>
-    <tr><td headers="Topic" class="gt_row gt_left">Disconnected Youth</td>
-<td headers="Data.Source" class="gt_row gt_left">JCPS / Kentucky Department of Education</td>
-<td headers="Current.Year.of.Data" class="gt_row gt_right">2019</td>
-<td headers="Next.Data.Release" class="gt_row gt_left">September 2022</td>
-<td headers="Explanation" class="gt_row gt_left">JCPS provides data on students' plans following graduation--entry into the workforce or military, college attendance, etc. While we have 2020 data, it is not comparable to other years due to diruptions from the COVID-19 pandemic. We await the next data release in September 2022.</td></tr>
-    <tr><td headers="Topic" class="gt_row gt_left">Youth Housing Instability</td>
-<td headers="Data.Source" class="gt_row gt_left">U.S. Census Bureau</td>
-<td headers="Current.Year.of.Data" class="gt_row gt_right">2019</td>
-<td headers="Next.Data.Release" class="gt_row gt_left">December 2022</td>
-<td headers="Explanation" class="gt_row gt_left">The U.S. Census Bureau administers an annual household survey (the American Community Survey, or ACS) which provides a variety of data on demographics, housing, and economics. Disruptions due to COVID-19 rendered the 2020 data inaccurate, so we await the 2021 data release coming in December 2022.</td></tr>
-    <tr><td headers="Topic" class="gt_row gt_left">JCPS Transition to Adult Life</td>
-<td headers="Data.Source" class="gt_row gt_left">U.S. Census Bureau</td>
-<td headers="Current.Year.of.Data" class="gt_row gt_right">2019</td>
-<td headers="Next.Data.Release" class="gt_row gt_left">December 2022</td>
-<td headers="Explanation" class="gt_row gt_left">The U.S. Census Bureau administers an annual household survey (the American Community Survey, or ACS) which provides a variety of data on demographics, housing, and economics. Disruptions due to COVID-19 rendered the 2020 data inaccurate, so we await the 2021 data release coming in December 2022.</td></tr>
-    <tr><td headers="Topic" class="gt_row gt_left">Funding to Youth Programming</td>
-<td headers="Data.Source" class="gt_row gt_left">IRS Filings from Nonprofits</td>
-<td headers="Current.Year.of.Data" class="gt_row gt_right">2020</td>
-<td headers="Next.Data.Release" class="gt_row gt_left">December 2022</td>
-<td headers="Explanation" class="gt_row gt_left">Tax filings for nonprofit organizations are public information, which allows us to understand the landscape of investment in youth programs in Louisville. The IRS has released all on-time filings for tax year 2020, and we will get newwer data on a rolling basis as tax returns for 2021 are submitted and released.</td></tr>
-    <tr><td headers="Topic" class="gt_row gt_left">Youth Violence</td>
-<td headers="Data.Source" class="gt_row gt_left">Centers for Disease Control</td>
-<td headers="Current.Year.of.Data" class="gt_row gt_right">2021</td>
-<td headers="Next.Data.Release" class="gt_row gt_left">March 2022</td>
-<td headers="Explanation" class="gt_row gt_left">The CDC releases mortality data on a monthly basis. This gives us insight into gun violence and other deaths for youth and young adults in Louisville.</td></tr>
-  </tbody>
-  
-  
-</table>
-</div>
-</div>
-</div>
-</div>
-<div id="policing" class="section level1">
-<h1>Policing</h1>
 <div id="clearance-rates" class="section level2">
 <h2>Clearance Rates</h2>
 <p>The clearance rate is the percent of cases that are solved.
-Louisville’s clearance rate has been low compared to its peers over the
-past few years. A sharp rise in homicides since 2019 has contributed to
-the number of unsolved cases in our community.</p>
+Louisville’s homicide clearance rate has been low compared to its peers
+over the past few years. A sharp rise in homicides since 2019 has
+contributed to the number of unsolved cases in our community.</p>
 <pre class="r"><code>setwd(&quot;..&quot;)
 
 folders &lt;- list.files(&quot;NIBRS&quot;, include.dirs = TRUE)
@@ -1692,263 +949,279 @@ table(peer_incidents$FIPS)
 incident_simple</code></pre>
 <p><img src="images/clearance%20rates.png" /></p>
 </div>
-<div id="louisvilles-recent-history-of-alternative-responder-models"
-class="section level2">
-<h2>Louisville’s Recent History of Alternative Responder Models</h2>
-<p>Many communities have relied on police officers as somewhat of a
-catch-all response to all kinds of crises. However, some say that many
-of these crises do not merit a police response; instead, they would be
-better solved by mental health experts and other providers of social
-services.</p>
-<p>Communities big and small — Phoenix, Portland, Tucson and Wichita, to
-name a few — have experimented in recent years with so-called
-alternative responder models in which police officers are not the
-default first response to a crisis.</p>
-<p>Over the last decade, Louisville has experimented with a few of these
-<em>alternative responder</em> models, aiming to reroute crisis calls
-from the police to mental health experts, social service providers and
-other experts who might be able to respond more appropriately.</p>
-<p>All of these pilot programs enjoyed some success but <strong>none are
-around to today</strong> largely because of a lack of funding.</p>
-<p><img src="images/alternative_responder.png" /></p>
-<p><em>Note: This historical account is adapted from the Louisville
-Metro Alternative Responder Model Research and Planning Final Report
-from the Commonwealth Institute of Kentucky (September 2021)</em></p>
-<blockquote>
-<p>Outcomes:</p>
-</blockquote>
-<ul>
-<li>Nurse Triage Program: The program was largely successful, and it
-expanded from one nurse to two. However, the program ran out of grant
-funding.</li>
-<li>Domestic Violence Victim Advocates: The victim advocates involved in
-the program reported that the program had positive effects on those
-experiencing trauma but also noted that the need in the community
-exceeded the capacity of their small team.</li>
-<li>Law Enforcement Assisted Diversion: The program served fewer people
-than expected over its relatively short lifespan. Other challenges
-included staff turnover in partner agencies and limited buy-in from
-partner agencies.</li>
-<li>The Living Room: The program was largely successful in that it
-provided wide access to behavioral health services while avoiding jail
-time, court fees, inpatient stays and housing and employment
-disruptions. It also resulted in cost savings to the Metro Government.
-However, budget cuts ultimately shuttered the program.</li>
-</ul>
+<div id="suicide" class="section level2">
+<h2>Suicide</h2>
+<div id="overall-1" class="section level3 tabset">
+<h3 class="tabset">Overall</h3>
+<div id="ranking-2" class="section level4">
+<h4>Ranking</h4>
+<p>Louisville ranks around the middle of its peers.</p>
+<pre class="r"><code>this_title &lt;- &quot;Suicide&quot;
+this_subtitle = &quot;Adjusted for population&quot;
+this_caption &lt;- &quot;\n\nData from CDC Wonder, 2022&quot;
+this_caption_trend_graphs &lt;- &quot;\n\nData from CDC Wonder, 2022&quot;
+
+temp &lt;- mortality %&gt;%
+  filter(age_5 == &quot;total&quot;) %&gt;%
+  mutate(suicide = suicide * adj)
+
+ranking(
+  temp,
+  suicide,
+  year = 2021,
+  plot_title = &quot;Suicide, 2021&quot;,
+  caption_text = this_caption,
+  subtitle_text = this_subtitle,
+  y_title = &quot;Deaths&quot;,
+  label_function = comma_format(accuracy = 1),
+  ranking_colors = FALSE,
+  order = &quot;ascending&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" width="1440" /></p>
 </div>
-<div id="existing-lmpd-mental-health-initiatives"
-class="section level2">
-<h2>Existing LMPD Mental Health Initiatives</h2>
-<p>The Crisis Intervention Team (CIT) model is a popular training
-program that teaches officers how to interact with and respond to those
-experiencing mental health crises.</p>
-<p>LMPD officers receive 40 hours of CIT training, and there are
-CIT-trained individuals available on every shift in every police
-division. However, according to researchers at the University of
-Louisville’s Commonwealth Institute of Kentucky, “LMPD does not
-routinely evaluate its CIT program and impact, outcomes, and
-efficiency.”</p>
-<p>In addition to the 40 hours of CIT training for some current LMPD
-officers, LMPD recruits going through the police academy complete 38.5
-hours of CIT training.</p>
-<p>Apart from CIT training, in February 2021, LMPD created its Mobile
-Response Unit with two homelessness officers. The unit has performed
-wellness checks and partnered with various community organizations to
-document homelessness and provide various resources.</p>
-</div>
-<div id="lmpds-investment-in-social-services" class="section level2">
-<h2>LMPD’s Investment in Social Services</h2>
-<p>The total number of LMPD officers has risen and fallen over the last
-15 years. It hit its peak in fiscal year 2018, at 1,027 officers. As of
-fiscal year 2020, there are now 956 officers.</p>
-<p>Meanwhile, for most of the last 15 years, LMPD has employed one or
-even no employees focused on social services, according to a GLP
-analysis of Louisville Metro Government documents. GLP included the
-positions of victim advocate, social service program coordinator and
-similar iterations of these positions in its analysis.</p>
-<p>In the most recent fiscal year in which data is available (2020),
-LMPD employed four individuals with a focus on providing social services
-to the community.</p>
-<pre class="r"><code>officer_data &lt;- read.csv(&#39;intermediate_data/lmpd_victim_advocates.csv&#39;)
+<div id="trend-2" class="section level4">
+<h4>Trend</h4>
+<p>Louisville’s homicide rate in 2021 was the highest in history that we
+have seen as a city.</p>
+<pre class="r"><code>trend(
+  filter(temp, year &lt; 2022),
+  suicide,
+  plot_title = this_title,
+  caption_text = this_caption,
+  label_function = comma_format(accuracy = 1),
+  y_title = &quot;Deaths&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" width="1440" /></p>
+<pre class="r"><code>temp &lt;- mortality %&gt;% 
+  pull_peers(add_info = T)
 
-library(ggplot2)
+graph_df &lt;- temp %&gt;%
+  filter(city == &quot;Louisville&quot;, 
+         sex == &quot;total&quot;,
+         race == &quot;total&quot;,
+         age_5 != &quot;total&quot;) %&gt;%
+  select(year, age_5, lou = suicide)
 
-total_officers &lt;- ggplot(officer_data, aes(x=fiscal_year, y=police_officer)) +
-  geom_line() + 
-  theme_minimal()
+temp %&lt;&gt;%
+  filter(city != &quot;Louisville&quot;, 
+         current == 1,
+         sex == &quot;total&quot;,
+         race == &quot;total&quot;,
+         age_5 != &quot;total&quot;) %&gt;%
+  group_by(year, age_5) %&gt;%
+  summarise(q1 = quantile(suicide, prob = 0.25, na.rm = TRUE),
+            mean = mean(suicide, na.rm = TRUE),
+            q3 = quantile(suicide, prob = 0.75, na.rm = TRUE),
+            .groups = &quot;drop&quot;)
+  
+graph_df %&lt;&gt;%
+  left_join(temp, by = c(&quot;year&quot;, &quot;age_5&quot;)) %&gt;%
+  filter(year == 2021)
 
-total_social_services &lt;- ggplot(officer_data, aes(x=fiscal_year, y=social_services)) +
-  geom_line() + 
-  theme_minimal()</code></pre>
-<p><img src="images/officers_social_services.png" /></p>
-</div>
-<div id="mental-health-calls-to-lmpd-that-could-be-deflected"
-class="section level2">
-<h2>Mental Health Calls to LMPD that Could be Deflected</h2>
-<p>In 2021, LMPD responded to 192,445 calls. Of those calls, 7,996 calls
-were mental health related (about 4%). An analysis by researchers at the
-Commonwealth Institute of Kentucky found that trained professionals
-other than police officers could have responded to 5,661 of those 7,996
-mental health calls (71%). This is known as deflection.</p>
-<p>Communities across the country have called for more police
-deflection, in favor of crisis response by mental health professionals
-and other social service providers.</p>
-<p>In March, Louisville officially launched a <a
-href="https://louisvilleky.gov/news/mayor-fischer-announces-official-start-pilot-project-deflect-some-911-calls-non-police">$5
-million pilot program</a> to deflect some 911 calls to other behavioral
-health professionals.</p>
-<blockquote>
-<p>Louisville’s new police deflection pilot program 11 trained
-professionals. Seven of those professionalls will be in the field
-responding to calls. Two will be answering 911 calls at a hub at
-MetroSafe, and two are case managers who will provide follow up services
-after 911 calls.</p>
-</blockquote>
-<p>The pilot program began in LMPD’s 4th Division with one shift, 7 days
-per week. The 4th Division received the most mental health calls in
-2021, followed by the 1st Division.</p>
-<pre class="r"><code>#install.packages(&#39;geojsonio&#39;)
-library(geojsonio)
-library(ggplot2) 
-library(broom)
-
-districts &lt;- geojson_read(&quot;intermediate_data/Louisville_KY_Metro_Police_Districts.geojson&quot;,  what = &quot;sp&quot;)
-
-districts_fortified &lt;- tidy(districts)
-
-district_map &lt;- ggplot() +
-  geom_polygon(data = districts_fortified, aes(x = long, y = lat, group = group), fill=&quot;white&quot;, color=&quot;black&quot;) +
-  theme_void() +
-  coord_map()</code></pre>
-<p><img src="images/police_districts_mental_health.png" /></p>
+ggplot(graph_df) +
+  geom_bar(aes(x = age_5, y = lou), fill = &quot;#00A9B7&quot;, stat = &quot;identity&quot;) +
+  geom_errorbar(aes(x = age_5, ymin = q1, ymax = q3), width = 0.4, size = 1.3, color = &quot;grey50&quot;) +
+  geom_point(aes(x = age_5, y = mean), size = 6) +
+  theme_bw(
+    base_size = 11,
+    base_family = &quot;Museo Sans&quot;)</code></pre>
 </div>
 </div>
-<div id="archive" class="section level1">
-<h1>Archive</h1>
-<p>This is content that we are planning to cut!</p>
-<div id="adverse-childhood-experiences" class="section level2">
-<h2>Adverse Childhood Experiences</h2>
-<p><img src="images/ACEs-risk-factors-1.png" /></p>
+<div id="youth-suicide" class="section level3 tabset">
+<h3 class="tabset">Youth suicide</h3>
+<p>(This doesn’t include poeple younger than 15.)</p>
+<div id="ranking-3" class="section level4">
+<h4>Ranking</h4>
+<pre class="r"><code>this_title &lt;- &quot;Youth Suicide&quot;
+this_subtitle = &quot;Ages 15-24; adjusted for population&quot;
+
+temp &lt;- mortality %&gt;%
+  filter(age_5 %in% c(&quot;15-19&quot;, &quot;20-24&quot;)) %&gt;%
+  group_by(FIPS, year, sex, race) %&gt;%
+  summarize(suicide = sum(suicide * adj), 
+            .groups = &quot;drop&quot;) 
+
+ranking(
+  temp,
+  suicide,
+  year = 2021,
+  plot_title = &quot;Youth Suicide, 2021&quot;,
+  caption_text = this_caption,
+  subtitle_text = this_subtitle,
+  y_title = &quot;Deaths&quot;,
+  label_function = comma_format(accuracy = 1),
+  ranking_colors = FALSE,
+  order = &quot;ascending&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" width="1440" /></p>
 </div>
-<div id="lmpd" class="section level2">
-<h2>LMPD</h2>
-<blockquote>
-<p>A Broader Look at Police Spending:</p>
-</blockquote>
-<p>Zooming out briefly, here’s a look at the most recent LMPD budget and
-specifically how much the department spends on its officers and other
-personnel vs. other expenses, compared to its peers.</p>
-<p>For this analysis, GLP focused on the peer cities of Nashville,
-Indianapolis and St. Louis. These are all cities in which the combined
-city and county public safety spending could be determined relatively
-easily and, therefore, compared with the Louisville metro area.</p>
-<p>Louisville and Nashville spend about the same on their police
-departments. However, Nashville spends more of its budget on its police
-officers and other personnel (98%) than Louisville (94%). Louisville
-spends relatively more on its contracts with out other vendors.</p>
-<p>Additionally, even though Louisville and Nashville have lower overall
-police budgets than Indianapolis and St. Louis, they both set aside a
-greater chunk of their budget for their officers and other personnel
-than Indianapolis and St. Louis.</p>
-<pre class="r"><code>library(ggplot2)
-library(waffle)
-
-louisville_police_spending &lt;- c(`Personnel ($176.5M)`=176514100, `Contracts ($8.4M)`=8449200, 
-             `Supplies ($2.2M)`=2244600, `Equipment and Capital ($878.6K)`=878600, `Utilities ($30.6K)`=30600)
-louisville_waffle &lt;- waffle(louisville_police_spending/500000, rows=10, size=0.5, 
-       colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;, &quot;#45644c&quot;), 
-       xlab=&quot;1 square == $500K&quot;)
-
-nashville_police_spending &lt;- c(`Personnel ($184.3M)`=184308627, `Contracts ($731K)`=731118, 
-             `Equipment and Capital ($2.6M)`=2617006, `Utilities ($56.4K)`=56414)
-nashville_waffle &lt;- waffle(nashville_police_spending/500000, rows=10, size=0.5, 
-       colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;), 
-       xlab=&quot;1 square == $500K&quot;)
-
-st_louis_police_spending &lt;- c(`Personnel ($237.7M)`=237696985, `Contracts ($18M)`=17950338, 
-             `Equipment and Capital ($2.8M)`=2765396, `Supplies ($4.6M)`=4623194)
-stlouis_waffle &lt;- waffle(st_louis_police_spending/500000, size=0.5,
-       colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;), 
-       xlab=&quot;1 square == $500K&quot;)
-
-indianapolis_police_spending &lt;- c(`Personnel ($200M)`=199974660, `Contracts ($20M)`=20013384, 
-             `Equipment and Capital ($9.4M)`=9432587, `Supplies ($2M)`=2002650)
-indianapolis_waffle &lt;- waffle(indianapolis_police_spending/500000,size=0.5, 
-       colors=c(&quot;#01acbb&quot;, &quot;#f48422&quot;, &quot;#520b34&quot;, &quot;#1b3663&quot;), 
-       xlab=&quot;1 square == $500K&quot;)</code></pre>
-<p><img src="images/police_peer_spending.png" /> LMPD’s police budget
-has continually increased over time — especially recently with tens of
-millions of dollars flowing in from the American Rescue Plan.</p>
-<p>Police salaries have also increased over time. In December 2021,
-Metro Council members approved a 9% raise for officers and sergeants for
-the 2021-22 year and a 6% raise for the following year.</p>
-<p>Currently, LMPD officers make nearly $57,000 after graduating from
-the police academy. That’s $24,000 above the $32,705 pre-tax living wage
-for one adult with no children in Louisville, according to MIT.</p>
-<p>A few of Louisville’s peer cities pay their officers even more above
-the area living wage: Cincinnati, Columbus, Indianapolis and Tulsa.</p>
-<pre class="r"><code>#devtools::install_github(&quot;hrbrmstr/ggalt&quot;)
-library(ggplot2)
-library(ggalt)
-theme_set(theme_classic())
-
-officer_salaries &lt;- read.csv(&#39;intermediate_data/police_officer_salary_peers.csv&#39;)
-officer_salaries$city &lt;- factor(officer_salaries$city, levels=as.character(officer_salaries$city))  
-
-officer_salaries$city &lt;- factor(officer_salaries$city)
-
-dumbbell &lt;- ggplot(officer_salaries, aes(x=living_wage, xend=after_graduation, y=city, group=city)) + 
-        geom_dumbbell(color=&quot;#01acbb&quot;, 
-                      size=1.5, 
-                      point.colour.l=&quot;#1b3663&quot;) + 
-        scale_x_continuous() + 
-        labs(x=NULL, 
-             y=NULL) +
-        theme(plot.title = element_text(hjust=0.5, face=&quot;bold&quot;),
-              panel.grid.minor=element_blank(),
-              panel.grid.major.y=element_blank(),
-              panel.grid.major.x=element_line(),
-              axis.ticks=element_blank(),
-              legend.position=&quot;top&quot;,
-              panel.border=element_blank())</code></pre>
-<p><img src="images/officer_salaries.png" /></p>
+<div id="trend-3" class="section level4">
+<h4>Trend</h4>
+<pre class="r"><code>trend(
+  filter(mortality_wide, year &lt; 2022, cod == &quot;suicide&quot;),
+  `15-19`:`20-24`,
+  cat = c(&quot;15-19&quot; = &quot;15-19&quot;, &quot;20-24&quot; = &quot;20-24&quot;),
+  plot_title = this_title,
+  subtitle_text = this_subtitle,
+  caption_text = this_caption_trend_graphs,
+  axis_function = comma_format(accuracy = 1),
+  label_function = comma_format(accuracy = 1),
+  pctiles = F,
+  y_title = &quot;Deaths&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" width="1440" /></p>
 </div>
-<div id="lmpd-professional-standards-unit-investigations"
-class="section level2">
-<h2>LMPD Professional Standards Unit Investigations</h2>
-<p>Those who advocate for police officers to respond to fewer types of
-calls in the community sometimes point to police misconduct data.</p>
-<p>Here’s a closer look at Professional Standards Unit investigations
-over the past couple of years. The PSU is responsible for conducting
-“internal, administrative investigations of departmental members and
-administering the department’s drug testing program,” according to LMPD
-documents.</p>
-<p>In 2020, the most common allegation or charge against LMPD officers
-involved use of force, followed by concerns with courtesy and officers’
-wearable video systems.</p>
-<p><img src="images/most_common_charges.png" /></p>
-<p>Over the last few years, the number of PSU investigations has
-declined.</p>
-<p>More than 40% of the investigations launched in 2020 are still
-pending, even two years later, and more than 70% of the investigations
-launched in 2021 are still pending. Overall, in any given year, a
-greater proportion of investigations are closed through various means
-(i.e. the charges are unfounded, the officer is exonerated, etc.) than
-sustained.</p>
-<p>Generally, over the past few years, most investigations have resulted
-in a written reprimand or suspension. Relatively few have resulted in
-termination or demotion.</p>
-<pre class="r"><code>library(ggplot2) 
+<div id="by-race-1" class="section level4">
+<h4>by Race</h4>
+<pre class="r"><code>trend(
+  temp,
+  suicide,
+  cat = &quot;race&quot;,
+  plot_title = this_title,
+  subtitle_text = this_subtitle,
+  caption_text = this_caption_trend_graphs,
+  axis_function = comma_format(accuracy = 1),
+  label_function = comma_format(accuracy = 1),
+  pctiles = F,
+  y_title = &quot;Deaths&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" width="1440" /></p>
+</div>
+<div id="by-gender-1" class="section level4">
+<h4>by Gender</h4>
+<pre class="r"><code>trend(
+  temp,
+  suicide,
+  cat = &quot;sex&quot;,
+  plot_title = this_title,
+  subtitle_text = this_subtitle,
+  caption_text = this_caption_trend_graphs,
+  axis_function = comma_format(accuracy = 1),
+  label_function = comma_format(accuracy = 1),
+  pctiles = F,
+  y_title = &quot;Deaths&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" width="1440" /></p>
+</div>
+</div>
+</div>
+<div id="overdoses" class="section level2">
+<h2>Overdoses</h2>
+<div id="overall-2" class="section level3 tabset">
+<h3 class="tabset">Overall</h3>
+<div id="ranking-4" class="section level4">
+<h4>Ranking</h4>
+<p>Louisville ranks around the middle of its peers.</p>
+<pre class="r"><code>this_title &lt;- &quot;Overdoses&quot;
+this_subtitle = &quot;Adjusted for population&quot;
+this_caption &lt;- &quot;\n\nData from CDC Wonder, 2022&quot;
+this_caption_trend_graphs &lt;- &quot;\n\nData from CDC Wonder, 2022&quot;
 
-psu_outcomes &lt;- read.csv(&#39;intermediate_data/PSU_investigations.csv&#39;)
+temp &lt;- overdose %&gt;%
+  mutate(overdoses = overdoses * adj)
 
-psu_outcomes &lt;- ggplot(psu_outcomes, aes(x=year)) +
-  geom_line(aes(y = pending), color = &quot;#01acbb&quot;) +
-  geom_line(aes(y = sustained), color = &quot;#1b3663&quot;) +
-  geom_line(aes(y = closed), color = &quot;#1b3663&quot;) +
-  geom_line(aes(y = total), color = &quot;#1b3663&quot;) +
-  theme_minimal()</code></pre>
-<p><img src="images/psu_outcomes.png" /></p>
+ranking(
+  temp,
+  overdoses,
+  year = 2021,
+  plot_title = &quot;Overdoses, 2021&quot;,
+  caption_text = this_caption,
+  subtitle_text = this_subtitle,
+  y_title = &quot;Deaths&quot;,
+  label_function = comma_format(accuracy = 1),
+  ranking_colors = FALSE,
+  order = &quot;ascending&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" width="1440" /></p>
+</div>
+<div id="trend-4" class="section level4">
+<h4>Trend</h4>
+<p>Louisville’s homicide rate in 2021 was the highest in history that we
+have seen as a city.</p>
+<pre class="r"><code>trend(
+  filter(temp, year &lt; 2022),
+  overdoses,
+  plot_title = this_title,
+  caption_text = this_caption,
+  axis_function = comma_format(accuracy = 1),
+  label_function = comma_format(accuracy = 1),
+  y_title = &quot;Deaths&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" width="1440" /></p>
+</div>
+</div>
+</div>
+</div>
+<div id="disconnected-youth" class="section level1 tabset">
+<h1 class="tabset">Disconnected youth</h1>
+<p>Disconnected youth, or opportunity youth, are people age 16 to 24 who
+are not working or in school. While we are missing data for 2020 due to
+the pandemic, we see a sharp rise in the percent of youth who are
+disconnected.</p>
+<div id="trend-5" class="section level2">
+<h2>Trend</h2>
+<p><img src="images/disconnected_trend.png" /></p>
+</div>
+<div id="by-race-2" class="section level2">
+<h2>by Race</h2>
+<p><img src="images/disconnected_trend_race.png" /></p>
+</div>
+</div>
+<div id="investing-in-youth-development-and-violence-intervention"
+class="section level1">
+<h1>Investing in youth development and violence intervention</h1>
+<div id="protective-factors-and-risk-factors" class="section level2">
+<h2>Protective factors and risk factors</h2>
+<p>Protective factors are supports that provide positive influence on
+youth and encourage them to thrive, while risk factors make youth more
+inclined commit violence. Examples of protective factors include
+positive self-esteem and an experienced teacher at school, and examples
+of risk factors include substance abuse in the household and violence in
+their neighborhood.</p>
+<p>See here for further information: <a
+href="https://www.samhsa.gov/sites/default/files/20190718-samhsa-risk-protective-factors.pdf"
+class="uri">https://www.samhsa.gov/sites/default/files/20190718-samhsa-risk-protective-factors.pdf</a></p>
+<p><img src="images/protective-risk.png" /></p>
+</div>
+<div id="nonprofit-investment" class="section level2">
+<h2>Nonprofit Investment</h2>
+<p>While these organizations do incredible work that has a tremendous
+impact on the youth who are able to participate, very little of this
+work is targeted toward youth who are of the age, gender, race, and
+neighborhoods that are most at-risk for violence.</p>
+<p><img src="images/Youth%20Funding.png" /></p>
+</div>
+<div id="government-investment" class="section level2 tabset">
+<h2 class="tabset">Government Investment</h2>
+<div id="city-budget-analysis" class="section level3">
+<h3>City budget analysis</h3>
+<p>Louisville has made consistent investments since merger in public
+safety services such as LMPD, EMS, and Louisville Fire. However, the
+city has not made sustained investments in youth services. Among the
+organizations listed at the top section of this table, the Office of
+Safe and Healthy Neighborhoods (OSHN) promotes hands-on violence
+intervention strategies, the Office of Resilience and Community Services
+oversees vital community support programs and the city’s Office of Youth
+Services, KentuckianaWorks provides job and career opportunities, and
+Youth Transitional Services is our city’s last intervention as youth
+enter the state’s juvenile detention system. Comparing funding today to
+the funding allocated the year OSHN was formed, most of these
+organizations have received declining allocations from the city budget,
+and much of OSHN’s current budget is supported by ARP dollars that will
+only last through 2026.</p>
+<p><img src="images/city-budget.png" /></p>
+</div>
+<div id="american-rescue-plan-funding" class="section level3">
+<h3>American Rescue Plan Funding</h3>
+<p>This table shows the programs Louisville is funding through the
+American Rescue Plan.</p>
+<p>See here for more detailed information on these projects: <a
+href="https://greaterlou.shinyapps.io/ARP-in-Lou/"
+class="uri">https://greaterlou.shinyapps.io/ARP-in-Lou/</a></p>
+<p><img src="images/arp-investment.png" /></p>
+</div>
+<div id="oshn-staffing" class="section level3">
+<h3>OSHN staffing</h3>
+<p>Since OSHN became a standalone office in 2017, it has seen huge
+swings in staffing. Through the American Rescue Plan, Metro Government
+allocated an additional $16.1M in ARP dollars to be spent from 2022 to
+2026. As a result, OSHN has increased staffing over the past few months,
+though there is uncertainty around whether these programs will continue
+after ARP dollars have been exhausted.</p>
+<p><img src="images/OSHN%20staffing.png" /></p>
+</div>
 </div>
 </div>
 
